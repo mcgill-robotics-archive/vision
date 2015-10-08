@@ -1,1 +1,2 @@
-# computer-vision
+McGill Robotics Vision
+======================
