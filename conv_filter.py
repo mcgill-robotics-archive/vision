@@ -16,8 +16,7 @@ def conv(ker,img):
 	return out
 def buoy_filter():
 	img = cv2.imread(sys.argv[1])
-        img = cv2.GaussianBlur(img,(3,3),2)
-	ker = create_kernel(11,3,-3,6)
+	ker = create_kernel(113,30,-2,6)
 	img = np.float32(img)/255
 	out_r = conv(ker,img[:,:,2])
 	out_b = conv(ker,img[:,:,0])
@@ -25,7 +24,7 @@ def buoy_filter():
 	out = cv2.merge((out_b,out_g,out_r))
 	out_m = np.hstack([img,out])
 
-	e2,boring = cv2.findContours(np.uint8(out[:,:,2])*255,cv2.cv.CV_RETR_EXTERNAL,cv2.cv.CV_CHAIN_APPROX_NONE)
+	e2,boring = cv2.findContours(np.uint8(255*out_r),cv2.cv.CV_RETR_EXTERNAL,cv2.cv.CV_CHAIN_APPROX_NONE)
 	
 	cv2.drawContours(out,e2,-1,(128,128,0),3)
         img = np.uint8(img*255)
