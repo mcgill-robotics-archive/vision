@@ -1,6 +1,6 @@
 #INPUT: list of text files as arguments to use for training
 
-import sys, string, pickle, os
+import sys, string, pickle, os, time
 import numpy as np
 from sklearn import svm
 from sklearn.externals import joblib
@@ -33,8 +33,8 @@ def setup_fresh(): #takes system arguments which are text files which contain al
     
     #Use 60% of X as training, 20% as cross validation, and 20% for testing performance
     m = len(X)
-    cv_index = m*0.6
-    test_index = m*0.8
+    cv_index = int(m*0.6)
+    test_index = int(m*0.8)
     X_train = X[0:cv_index]
     X_cv = X[cv_index:test_index]
     X_test = X[test_index:m+1]
@@ -56,14 +56,17 @@ def setup_load():
 
 
 def main():
-        setup_fresh() #use if no pkl files exist for sets
-        #setup_load()
-        print "Setup done. Feedforward/Backprop starts beginning."
-        #NN_model = 
-        # Train a neural network
-        print "Backprop done"
-        joblib.dump(NN_model, 'DATA/NN_model.pkl')
-        print "Model save successful"
-        #debug(NN_model, X_cv, y)
+        
+    setup_fresh() #use if no pkl files exist for sets
+    #setup_load()
+	print "Setup done. Feedforward/Backprop initializing... (This may take some time)"
+
+	init_time = time.time()
+    NN_model = MLPClassifier(algorithm='l-bfgs', alpha=1e-5, hidden_layer_sizes=(), random_state=1)
+    print "Feedforward/Backprop done. Training took " + str(time.time() - init_time) + " seconds. Saving model..."
+
+	joblib.dump(NN_model, 'DATA/NN_model.pkl')
+    print "Model save successful"
+    #debug(NN_model, X_cv, y)
 
 main()
