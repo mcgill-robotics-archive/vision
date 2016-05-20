@@ -56,9 +56,13 @@ def setup_load():
 
 
 def main():
-        
-    setup_fresh() #use if no pkl files exist for sets
-    #setup_load()
+    if os.path.isfile('DATA/X_train.pkl') and os.path.isfile('DATA/X_cv.pkl') and os.path.isfile('DATA/X_test.pkl'):
+        print "Pre-existing .pkl files found, loading from data..."
+        setup_load()
+    else:
+        print "No .pkl files found, setting up a fresh environment..."
+        setup_fresh() #use if no pkl files exist for sets
+
 	print "Setup done. Feedforward/Backprop initializing... (This may take some time)"
 
 	init_time = time.time()
