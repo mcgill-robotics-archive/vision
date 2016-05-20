@@ -56,21 +56,21 @@ def setup_load():
 
 
 def main():
+    #If existing models have been parsed, load them, otherwise we parse them fresh
     if os.path.isfile('DATA/X_train.pkl') and os.path.isfile('DATA/X_cv.pkl') and os.path.isfile('DATA/X_test.pkl'):
         print "Pre-existing .pkl files found, loading from data..."
         setup_load()
     else:
         print "No .pkl files found, setting up a fresh environment..."
-        setup_fresh() #use if no pkl files exist for sets
+        setup_fresh()
 
 	print "Setup done. Feedforward/Backprop initializing... (This may take some time)"
 
 	init_time = time.time()
-    NN_model = MLPClassifier(algorithm='l-bfgs', alpha=1e-5, hidden_layer_sizes=(), random_state=1)
+    NN_model = MLPClassifier(algorithm='l-bfgs', alpha=1e-5, hidden_layer_sizes=(550,), random_state=1) #550 is a rough estimate for an appropriate number of hidden units based on Andrew Ng
     print "Feedforward/Backprop done. Training took " + str(time.time() - init_time) + " seconds. Saving model..."
 
 	joblib.dump(NN_model, 'DATA/NN_model.pkl')
     print "Model save successful"
-    #debug(NN_model, X_cv, y)
 
 main()
