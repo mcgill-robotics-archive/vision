@@ -74,16 +74,14 @@ def setup_fresh(): #takes system arguments which are text files which contain al
 def setup_load():
     X = joblib.load('DATA/X.pkl')
     X_train = joblib.load('DATA/X_train.pkl')
-    X_cv = joblib.load('DATA/X_cv.pkl')
-    X_test = joblib.load('DATA/X_test.pkl')
-    X_train = joblib.load('DATA/X_train.pkl')
     y = joblib.load('DATA/y.pkl')
     y_train = joblib.load('DATA/y_train.pkl')
-    y_cv = joblib.load('DATA/y_cv.pkl')
-    y_test = joblib.load('DATA/y_test.pkl')
 
 
 def main():
+    if len(sys.argv) < 2:
+        print "Please use flag -full or -test when running the program"
+        exit()
     if sys.argv[1] == "-full":
         full = True
     elif sys.argv[1] == "-test":
@@ -93,7 +91,7 @@ def main():
         exit()
 
     #If existing models have been parsed, load them, otherwise we parse them fresh
-    if os.path.isfile('DATA/X_train.pkl') and os.path.isfile('DATA/X_cv.pkl') and os.path.isfile('DATA/X_test.pkl') and s.path.isfile('DATA/X.pkl'):
+    if os.path.isfile('DATA/X_train.pkl') and os.path.isfile('DATA/y_train.pkl') and os.path.isfile('DATA/y.pkl') and s.path.isfile('DATA/X.pkl'):
         print "Pre-existing .pkl files found, loading from data..."
         setup_load()
     else:
@@ -104,7 +102,7 @@ def main():
     print "Setup done. Feedforward/Backprop initializing... (This may take some time)"
     init_time = time.time()
 
-    NN_model = MLPClassifier(algorithm='l-bfgs', alpha=1e-5, hidden_layer_sizes=(550,), random_state=1) #550 is a rough estimate for an appropriate number of hidden units
+    NN_model = MLPClassifier(algorithm='l-bfgs', alpha=1e-5, hidden_layer_sizes=(128,128), random_state=1) #550 is a rough estimate for an appropriate number of hidden units
     if full:
         NN_model.fit(X,y)
     else:
