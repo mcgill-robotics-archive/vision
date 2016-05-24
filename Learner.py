@@ -1,5 +1,5 @@
 ######################################################################################################################################################################
-#   Written for Computer Vision team on McGill Robotics by Alexander Chatron-Michaud
+#   Written for Computer Vision team on McGill Robotics by Alexander Chatron-Michaud & Tristan Struthers
 #   Usage: 
 #          - First command line argument is flag 1. If cross validation and test sets should be created, use the flag -test. Otherwise use the "full" flag -full
 #          - If .pkl files exist in the DATA folder, they will be loaded upon execution
@@ -57,6 +57,7 @@ def setup_fresh(): #takes system arguments which are text files which contain al
     X_train = scaler_test.transform(X_train)
     X_cv = scaler_test.transform(X_cv)
     X_test = scaler_test.transform(X_test)
+    joblib.dump(scaler, 'DATA/scaler_full.pkl')
     joblib.dump(scaler, 'DATA/scaler_test.pkl')
     joblib.dump(X_train, 'DATA/X_train.pkl')
     joblib.dump(X_cv, 'DATA/X_cv.pkl')
