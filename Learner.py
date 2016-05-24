@@ -87,10 +87,10 @@ def main():
         print "No .pkl files found, setting up a fresh environment..."
         setup_fresh()
 
-        
-    print "Setup done. Feedforward/Backprop initializing... (This may take some time)"
 
-	init_time = time.time()
+    print "Setup done. Feedforward/Backprop initializing... (This may take some time)"
+    init_time = time.time()
+    
     NN_model = MLPClassifier(algorithm='l-bfgs', alpha=1e-5, hidden_layer_sizes=(550,), random_state=1) #550 is a rough estimate for an appropriate number of hidden units
     if full:
         NN_model.fit(X,y)
