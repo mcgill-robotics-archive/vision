@@ -7,15 +7,17 @@ import cv2
 import sys
 import math
 import profile
-#takes filename to process
-#multiplies the intensity of all the pixels by a factor of 1/2
-#runs the grayworld algorithm on the image to create input 1
-#runs a bilatereal filter then equalizes the histogram to create input 2
-#WIP#
-#caluclate weightmdaps
-#fuse
-#output
-#WIP#
+
+"""image_listner
+   
+   Will listen to the camera feed take images and publish images to the topi   c: preprocessed images
+   
+   For testing: run it alongside a bag and run the imageviewer on the topic
+   preproc
+
+   For actual use: pull images from the topic preproc while the program is running
+"""
+
 class image_listener:
     def __init__(self):
         self.image_pub = rospy.Publisher("processed_image",Image)
@@ -33,14 +35,31 @@ class image_listener:
             print e
         self.image_pub.publish(pub_img)
 
+"""
+    Fuction main:
 
+    Will start the ROS node
+"""
 def main():
     il = image_listener()
     rospy.init_node("processer",anonymous = True)
     rospy.spin()
+"""
+    function process:
+
+    will take an image and process it using the following steps
+
+    1. Downsample the image by a factor of an half on each axis
+    2. Run some filters including white balancing
+    3. Calculate weight maps
+    4. fuse
+
+    Uses the algorithm mentioned in the paper:https://doclib.uhasselt.be/dspace/bitstream/1942/13914/1/CVPR_underwater_final.pdf
+"""
 def process(img):
     image = img
     image = np.float32(image)
+    image = cv2.resize(image,None,fx=0.5,fy=0.5)
     equi_img = image*(2.0/4.0)#halves the intensities
     size_w = np.shape(equi_img)[0]#width
     size_l = np.shape(equi_img)[1]#length
@@ -48,9 +67,6 @@ def process(img):
     equi_img = np.float32(equi_img)#convert the image back into float32
     i2 = cv2.bilateralFilter(equi_img,11,size_w,size_l)#input 2 created by bilateral filter
     i2 = equalhist(i2)#equalize histogram
-    #w1 = saliency_weight_map(cv2.GaussianBlur(i2,(11,11),0.3),i2)
-    #w2 = saliency_weight_map(cv2.GaussianBlur(i1,(11,11),0.3),i1)
-    #p = cv2.addWddeighted(i2,w1,i1,w2)
     fused = fusion(i1,i2)
     compare = np.hstack([image,fused])
     cv2.imwrite("compare.jpg",compare)
@@ -124,7 +140,7 @@ def saliency_weight_map(blur_img,img):
     for x in xrange(np.shape(weight_map)[2]):
         weight_map[x] = a[x]
     return weight_map
-#TODO
+
 #Fusion step
 # takes two images returns one
 # performs weighted addition
