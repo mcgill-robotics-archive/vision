@@ -65,6 +65,8 @@ class ImageFeatures(object):
     def compute_avg_des(self, kp_list, des):
         # Compute average descriptor vector for given list of kp
         total_array = np.empty(128) # Assuming extended descriptors, initialize empty array of length 128
+        if not kp_list: # If no keypoints are detected
+            return total_array # Returns array of zeros
         for point in kp_list:
             index = des[0].index(point)
             total_array += des[1][index]
