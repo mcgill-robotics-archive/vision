@@ -21,6 +21,8 @@
  *
  *  Created on: June 8, 2012
  *      Author: Ronan Chauvin
+ *  Modified on: June 28, 2016
+ *      Modifier: Alex Smith, McGill Robotics
  */
 
 #include "main.hpp"
@@ -216,6 +218,9 @@ void Main::process()
         case 'r':
           reset();
           break;
+        case 'f':
+          forceNewBB();
+          break;
         default:
           break;
       }
@@ -306,6 +311,11 @@ void Main::process()
     {
       correctBB = false;
       state = INIT;
+    }
+
+    void Main::forceNewBB()
+    {
+      /* write some code here */
     }
 
     cv::Rect Main::faceDetection()
