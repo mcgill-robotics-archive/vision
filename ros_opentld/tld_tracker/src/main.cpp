@@ -315,7 +315,7 @@ void Main::process()
 
     void Main::forceNewBB()
     {
-      /* write some code here */
+      std::cout << "Called force new BB";
     }
 
     cv::Rect Main::faceDetection()

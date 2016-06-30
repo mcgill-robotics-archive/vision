@@ -29,7 +29,7 @@
 #include <sensor_msgs/image_encodings.h>
 
 #include <QtCore/QDebug>
-#include <QtCore/QString>
+#include <QtCore/QStringf>
 #include <QtGui/QFileDialog>
 
 namespace enc = sensor_msgs::image_encodings;
