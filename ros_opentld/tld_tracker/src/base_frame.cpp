@@ -49,7 +49,7 @@ BaseFrame::BaseFrame()
 	QObject::connect(importing_button,SIGNAL(clicked()),this,SLOT(import_model()));
 	QObject::connect(exporting_button,SIGNAL(clicked()),this,SLOT(export_model()));
 	QObject::connect(reset_button,SIGNAL(clicked()),this,SLOT(reset()));
-	OObject::connect(force_button,SIGNAL(clicked()),this,SLOT(force_new_BB()));
+	QObject::connect(force_button,SIGNAL(clicked()),this,SLOT(force_new_BB()));
 
 	sub1 = n.subscribe("image", 1000, &BaseFrame::image_receivedCB, this);
 	sub2 = n.subscribe("tracked_object", 1000, &BaseFrame::tracked_objectCB, this);
@@ -253,6 +253,6 @@ void BaseFrame::reset()
 }
 
 
-void force_new_BB(){
+void BaseFrame::force_new_BB(){
 	/* code here to force a new bounding box to build model */
 }

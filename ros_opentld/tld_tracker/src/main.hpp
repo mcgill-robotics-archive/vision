@@ -175,6 +175,7 @@ class Main
 		void exportModel();
 		void importModel();
 		void reset();
+		void forceNewBB();
 
         /*!
         * \brief This function allows to automatically initialize the target 
