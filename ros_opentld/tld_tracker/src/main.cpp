@@ -88,7 +88,7 @@ void Main::process()
                     ROS_INFO("Waiting for a BB");
                 }
                 break;
-                  case TRACKING:
+            case TRACKING:
                 if(newImageReceived())
                 {
                   ros::Time tic = ros::Time::now();
@@ -116,10 +116,34 @@ void Main::process()
                   }
                 }
                 break;
-                  case STOPPED:
-                    ros::Duration(1.0).sleep();
-                    ROS_INFO("Tracker stopped");
+            case STOPPED:
+                ros::Duration(1.0).sleep();
+                ROS_INFO("Tracker stopped");
                 break;
+            case FORCE:
+            	if(autoFaceDetection || correctBB)
+                {
+                    if(autoFaceDetection)
+                    {
+                        target_image = gray;
+                        target_bb = faceDetection();
+                    }
+
+                    sendTrackedObject(target_bb.x,target_bb.y,target_bb.width,target_bb.height,1.0);
+
+                    ROS_INFO("Starting at %d %d %d %d\n", target_bb.x, target_bb.y, target_bb.width, target_bb.height);
+
+                    tld->selectObject(target_image, &target_bb);
+                    tld->learningEnabled = true;
+                    state = TRACKING;
+                }
+                else
+                {
+                    ros::Duration(1.0).sleep();
+                    ROS_INFO("Waiting for a BB");
+                }
+                break;
+
                   default:
                 break;
                 }
@@ -315,7 +339,7 @@ void Main::process()
 
     void Main::forceNewBB()
     {
-      std::cout << "Called force new BB";
+      state = FORCE;
     }
 
     cv::Rect Main::faceDetection()
