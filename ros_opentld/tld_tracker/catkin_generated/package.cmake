@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "tld_tracker")
+set(tld_tracker_MAINTAINER "Ronan Chauvin <ronanchauvin@hotmail.com>")
+set(tld_tracker_DEPRECATED "")
+set(tld_tracker_VERSION "0.0.0")
+set(tld_tracker_BUILD_DEPENDS "roscpp" "cv_bridge" "std_msgs" "sensor_msgs" "tld_msgs")
+set(tld_tracker_RUN_DEPENDS "roscpp" "cv_bridge" "std_msgs" "sensor_msgs" "tld_msgs")
+set(tld_tracker_BUILDTOOL_DEPENDS "catkin")

@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "tld_msgs")
+set(tld_msgs_MAINTAINER "Ronan Chauvin <ronanchauvin@hotmail.com>")
+set(tld_msgs_DEPRECATED "")
+set(tld_msgs_VERSION "0.0.0")
+set(tld_msgs_BUILD_DEPENDS "message_generation" "std_msgs" "sensor_msgs")
+set(tld_msgs_RUN_DEPENDS "std_msgs" "sensor_msgs")
+set(tld_msgs_BUILDTOOL_DEPENDS "catkin")

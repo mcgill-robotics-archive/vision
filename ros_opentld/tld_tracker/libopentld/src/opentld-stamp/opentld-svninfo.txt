@@ -1,0 +1,3 @@
+repository='https://github.com/Ronan0912/OpenTLD/trunk/ user= password='
+module=''
+tag='-rHEAD'

@@ -1,0 +1,1 @@
+cmd='/usr/bin/cmake;-GUnix Makefiles;/home/alexsmith/coding/auv/catkin_ws/build/ros_opentld/tld_tracker/libopentld/src/opentld'

@@ -1,0 +1,8 @@
+prefix=/home/alexsmith/coding/auv/catkin_ws/install
+
+Name: tld_msgs
+Description: Description of tld_msgs
+Version: 0.0.0
+Cflags: -I/home/alexsmith/coding/auv/catkin_ws/install/include
+Libs: -L/home/alexsmith/coding/auv/catkin_ws/install/lib 
+Requires: 
