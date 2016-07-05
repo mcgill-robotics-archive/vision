@@ -31,6 +31,7 @@
 #include <sensor_msgs/image_encodings.h>
 
 namespace enc = sensor_msgs::image_encodings;
+bool forcing = false;
 
 void Main::process()
 {
@@ -121,17 +122,14 @@ void Main::process()
                 ROS_INFO("Tracker stopped");
                 break;
             case FORCE:
-            	if(autoFaceDetection || correctBB)
+            	if(correctBB)
                 {
-                    if(autoFaceDetection)
-                    {
-                        target_image = gray;
-                        target_bb = faceDetection();
-                    }
+                    target_image = gray;
+                    target_bb = faceDetection();
 
                     sendTrackedObject(target_bb.x,target_bb.y,target_bb.width,target_bb.height,1.0);
 
-                    ROS_INFO("Starting at %d %d %d %d\n", target_bb.x, target_bb.y, target_bb.width, target_bb.height);
+                    ROS_INFO("Added BB at %d %d %d %d\n", target_bb.x, target_bb.y, target_bb.width, target_bb.height);
 
                     tld->selectObject(target_image, &target_bb);
                     tld->learningEnabled = true;
@@ -140,10 +138,21 @@ void Main::process()
                 else
                 {
                     ros::Duration(1.0).sleep();
-                    ROS_INFO("Waiting for a BB");
+                    ROS_INFO("Waiting for forced BB");
                 }
                 break;
+            case FORCE_INIT:
+            	if(newImageReceived()){
+            		if(showOutput)
+                        sendTrackedObject(0, 0, 0, 0, 0.0);
+                    getLastImageFromBuffer();
+                    tld->detectorCascade->imgWidth = gray.cols;
+                    tld->detectorCascade->imgHeight = gray.rows;
+                    tld->detectorCascade->imgWidthStep = gray.step;
 
+                    state = FORCE;
+            	}
+            	break;
                   default:
                 break;
                 }
@@ -192,12 +201,13 @@ void Main::process()
 
     void Main::targetReceivedCB(const tld_msgs::TargetConstPtr & msg)
     {
-      reset();
+      if (!forcing) {reset();} 
+      	
       ROS_ASSERT(msg->bb.x >= 0);
       ROS_ASSERT(msg->bb.y >= 0);
       ROS_ASSERT(msg->bb.width > 0);
       ROS_ASSERT(msg->bb.height > 0);
-      ROS_INFO("Bounding Box received");
+      ROS_INFO("Bounding Box received. Reset has been called.");
 
       target_bb.x = msg->bb.x;
       target_bb.y = msg->bb.y;
@@ -339,7 +349,9 @@ void Main::process()
 
     void Main::forceNewBB()
     {
-      state = FORCE;
+      correctBB = false;
+      forcing = true;
+      state = FORCE_INIT;
     }
 
     cv::Rect Main::faceDetection()

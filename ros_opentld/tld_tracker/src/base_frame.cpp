@@ -254,5 +254,8 @@ void BaseFrame::reset()
 
 
 void BaseFrame::force_new_BB(){
-	/* code here to force a new bounding box to build model */
+	std_msgs::Char cmd;
+	cmd.data = 'f';
+	pub2.publish(cmd);
+	qDebug() << "Forcing";
 }

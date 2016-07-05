@@ -23,4 +23,3 @@ Like OpenTLD, ROS_OpenTLD is published under the terms of the GNU General Public
 IntRoLab
 http://introlab.3it.usherbrooke.ca
 Université de Sherbrooke, Québec, Canada
-test

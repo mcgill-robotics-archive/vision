@@ -113,10 +113,13 @@ class Main
 			INIT,
 			TRACKER_INIT,
 			TRACKING,
-			STOPPED
+			STOPPED,
+			FORCE,
+			FORCE_INIT
 		} state;
 
 		bool correctBB;
+		bool forcing;
 		cv::Rect target_bb;
 		cv::Mat target_image;
 
