@@ -1,8 +1,0 @@
-prefix=/home/alexsmith/coding/auv/catkin_ws/install
-
-Name: tld_tracker
-Description: Description of tld_tracker
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/alexsmith/coding/auv/catkin_ws/install/lib -llibopentld
-Requires: roscpp cv_bridge std_msgs sensor_msgs tld_msgs
