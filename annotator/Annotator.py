@@ -1,5 +1,7 @@
 import numpy as np
 import cv2
+import os
+import sys
 
 __author__ = "Jey Kumar"
 
@@ -8,12 +10,15 @@ __author__ = "Jey Kumar"
         and category is either 1 or 2 (1 = buoy, 2 = bin).
 """
 
+INSTRUCTIONS = "instructions.jpg" # Path to instructions file relative to this script
+instructions_file = os.path.relpath(os.path.join(os.path.dirname(__file__), INSTRUCTIONS)) # For cases when script is being imported as module
+
 class Annotator(object):
     """Annotator class"""
     def __init__(self, filename):
         self.filename = filename
         self.img = cv2.imread(filename, -1)
-        self.instructions = cv2.imread("instructions.jpg", -1)
+        self.instructions = cv2.imread(instructions_file, -1)
         self.undo = None
         self.pressed = False
         self.need_to_classify = False
@@ -32,8 +37,7 @@ class Annotator(object):
             if key_display & 0xFF == 27: # "Esc" pressed
                 break
             elif key_display & 0xFF == 32: # "Space" pressed
-                print "Data dumped"
-                print self.data
+                print "Annotation completed."
                 self.dump_data()
                 break
             if self.need_to_classify:
@@ -81,8 +85,11 @@ class Annotator(object):
         return category
     
     def dump_data(self):
-        filename = self.filename.split(".")
-        filename = "".join(filename[:-1]) + ".txt"
+        directory_output = "output\\"
+        filename_base = os.path.basename(self.filename).split(".")[0]
+        filename_base = os.path.normpath(filename_base + ".txt")
+        filename = os.path.join(directory_output, filename_base)
+        
         with open(filename, "w") as text_file:
             for region in self.data:
                 line = str(region[:]) + "\n"
@@ -97,8 +104,7 @@ if __name__ == "__main__":
             2. Follow on-screen instructions to classify (1 for buoy, 2 for bin, 0 to reset).
             3. When finished, press SPACE to write annotation data to text file (with same file name as input image file).
     """
-    # DEMO
-    filename = "test_image.jpg" # Test input
+    filename = sys.argv[1]
     img = Annotator(filename)
     img.main()
     

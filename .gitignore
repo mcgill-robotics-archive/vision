@@ -20,3 +20,4 @@
 *.swo
 *.swp
 .DS_Store
+*.db
