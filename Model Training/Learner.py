@@ -8,6 +8,7 @@
 
 import sys, string, pickle, os, time
 import numpy as np
+#from sklearn.neural_network import MLPClassifier
 from sklearn import svm
 from sklearn.externals import joblib
 from sklearn import preprocessing
@@ -17,8 +18,10 @@ X_train = []
 X_cv = []
 X_test = []
 y = []
+y_train = []
 
 def addToX(textfile): #Opens "textfile" and adds line-by-line training vectors to X_train and gives them the file's name as it's y value
+        global X, X_train, y, y_train
         correct_val = os.path.splitext(textfile)[0]
         with open(textfile) as f:
                 for x in f.readlines():
@@ -34,13 +37,14 @@ def addToX(textfile): #Opens "textfile" and adds line-by-line training vectors t
                 f.close()
 
 def setup_fresh(): #takes system arguments which are text files which contain all the examples of that category
+    global X, X_train, y, y_train
     if len(sys.argv) < 3 :
         print "Please enter one or more data files as command line arguments."
         exit()
 
     for index in range(2,len(sys.argv)):
         addToX(sys.argv[index])
-        print str(sys.argv[index]) + "done."
+        print str(sys.argv[index]) + " added to dataset successfully"
     
     #Use 60% of X as training, 20% as cross validation, and 20% for testing performance
     m = len(X)
@@ -60,8 +64,8 @@ def setup_fresh(): #takes system arguments which are text files which contain al
     X_train = scaler_test.transform(X_train)
     X_cv = scaler_test.transform(X_cv)
     X_test = scaler_test.transform(X_test)
-    joblib.dump(scaler, 'DATA/scaler_full.pkl')
-    joblib.dump(scaler, 'DATA/scaler_test.pkl')
+    joblib.dump(scaler_full, 'DATA/scaler_full.pkl')
+    joblib.dump(scaler_test, 'DATA/scaler_test.pkl')
     joblib.dump(X_train, 'DATA/X_train.pkl')
     joblib.dump(X_cv, 'DATA/X_cv.pkl')
     joblib.dump(X_test, 'DATA/X_test.pkl')
@@ -72,6 +76,7 @@ def setup_fresh(): #takes system arguments which are text files which contain al
     joblib.dump(y, 'DATA/y.pkl')
 
 def setup_load():
+    global X, X_train, y, y_train
     X = joblib.load('DATA/X.pkl')
     X_train = joblib.load('DATA/X_train.pkl')
     y = joblib.load('DATA/y.pkl')
@@ -79,6 +84,7 @@ def setup_load():
 
 
 def main():
+    global X, X_train, y, y_train
     if len(sys.argv) < 2:
         print "Please use flag -full or -test when running the program"
         exit()
@@ -91,7 +97,7 @@ def main():
         exit()
 
     #If existing models have been parsed, load them, otherwise we parse them fresh
-    if os.path.isfile('DATA/X_train.pkl') and os.path.isfile('DATA/y_train.pkl') and os.path.isfile('DATA/y.pkl') and s.path.isfile('DATA/X.pkl'):
+    if os.path.isfile('DATA/X_train.pkl') and os.path.isfile('DATA/y_train.pkl') and os.path.isfile('DATA/y.pkl') and os.path.isfile('DATA/X.pkl'):
         print "Pre-existing .pkl files found, loading from data..."
         setup_load()
     else:
@@ -102,7 +108,7 @@ def main():
     print "Setup done. Feedforward/Backprop initializing... (This may take some time)"
     init_time = time.time()
 
-    NN_model = MLPClassifier(algorithm='l-bfgs', alpha=1e-5, hidden_layer_sizes=(128,128), random_state=1) #550 is a rough estimate for an appropriate number of hidden units
+    NN_model = svm.SVC()  #(algorithm='l-bfgs', alpha=1e-5, hidden_layer_sizes=(128,128), random_state=1) #550 is a rough estimate for an appropriate number of hidden units
     if full:
         NN_model.fit(X,y)
     else:

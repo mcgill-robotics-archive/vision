@@ -20,6 +20,7 @@ y_test = []
 NN_model = None
 
 def addToX(textfile): #Opens "textfile" and adds line-by-line training vectors to X_train and gives them the file's name as it's y value
+        global X, X_cv, X_test, y_cv, y_test, NN_model
         correct_val = os.path.splitext(textfile)[0]
         with open(textfile) as f:
                 for x in f.readlines():
@@ -34,26 +35,26 @@ def addToX(textfile): #Opens "textfile" and adds line-by-line training vectors t
                 f.close()
 
 def setup(full):
-
-	NN_model = joblib.load('DATA/NN_model.pkl')		
-	if full:
+    global X, X_cv, X_test, y_cv, y_test, NN_model
+    NN_model = joblib.load('DATA/NN_model.pkl')
+    if full:
 		if len(sys.argv < 3) or not os.path.isfile(sys.argv[2]):
 			print "Please supply a vaild filepath for the set you want to predict."
 			exit()
 		addToX(sys.argv[2])
-	else: # -test cmd line flag was used
-		X_cv = joblib.load('DATA/X_cv.pkl')
-	    X_test = joblib.load('DATA/X_test.pkl')
-	    y_cv = joblib.load('DATA/y_cv.pkl')
-	    y_test = joblib.load('DATA/y_test.pkl')
+    else: # -test cmd line flag was used
+        X_cv = joblib.load('DATA/X_cv.pkl')
+        X_test = joblib.load('DATA/X_test.pkl')
+        y_cv = joblib.load('DATA/y_cv.pkl')
+        y_test = joblib.load('DATA/y_test.pkl')
 
 def main():
-	if len(sys.argv) < 2:
- 		print "Please use flag -full or -test when running the program"
- 		exit()
-
+    global X, X_cv, X_test, y_cv, y_test, NN_model
+    if len(sys.argv) < 2:
+        print "Please use flag -full or -test when running the program"
+        exit()
     if sys.argv[1] == "-full":
-    	full = True
+        full = True
     elif sys.argv[1] == "-test":
         full = False
     else:
