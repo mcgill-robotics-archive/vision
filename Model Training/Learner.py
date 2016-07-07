@@ -53,9 +53,9 @@ def setup_fresh(): #takes system arguments which are text files which contain al
     X_train = X[0:cv_index]
     X_cv = X[cv_index:test_index]
     X_test = X[test_index:m+1]
-    y_train = X[0:cv_index]
-    y_cv = X[cv_index:test_index]
-    y_test = X[test_index:m+1]
+    y_train = y[0:cv_index]
+    y_cv = y[cv_index:test_index]
+    y_test = y[test_index:m+1]
 
     #Give zero mean and unit variance
     scaler_full = preprocessing.StandardScaler().fit(X)
