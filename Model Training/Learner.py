@@ -26,8 +26,8 @@ def addToX(textfile): #Opens "textfile" and adds line-by-line training vectors t
         with open(textfile) as f:
                 for x in f.readlines():
                         x = x.replace(',', '')
-                        x = x.replace('(', '')
-                        x = x.replace(')', '')
+                        x = x.replace('[', '')
+                        x = x.replace(']', '')
                         line = x.split()
                         outline = []
                         for char in line:
