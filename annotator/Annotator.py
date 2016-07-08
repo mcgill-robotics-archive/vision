@@ -37,13 +37,11 @@ class Annotator(object):
             if key_display & 0xFF == 27: # "Esc" pressed
                 break
             elif key_display & 0xFF == 32: # "Space" pressed
-                print "Annotation completed."
                 self.dump_data()
                 break
             if self.need_to_classify:
                 category = None
                 cv2.imshow("Display", self.img) # Update window to show drawn rectangle
-                self.need_to_classify = False
                 cv2.namedWindow("Classify")
                 while True:
                     cv2.imshow("Classify", self.instructions)
@@ -60,16 +58,18 @@ class Annotator(object):
                         self.img = self.undo
                         break
                 cv2.destroyWindow("Classify")
+                self.need_to_classify = False
                 
         cv2.destroyAllWindows()
     
     def user_control(self, event, x, y, flags, param):
         if event == cv2.EVENT_LBUTTONDOWN:
-            del self.clicks[:]
-            self.pressed = True
-            self.clicks.append((x,y))
+            if not self.need_to_classify:
+                del self.clicks[:]
+                self.pressed = True
+                self.clicks.append((x,y))
         if event == cv2.EVENT_LBUTTONUP:
-            if self.pressed:
+            if self.pressed and not self.need_to_classify:
                 self.clicks.append((x,y))
                 pt1 = self.clicks[0]
                 pt2 = self.clicks[1]
@@ -94,6 +94,9 @@ class Annotator(object):
             for region in self.data:
                 line = str(region[:]) + "\n"
                 text_file.write(line)
+        
+        msg = "{} annotated.".format(os.path.basename(self.filename))
+        print msg
 
     def main(self):
         self.display()
