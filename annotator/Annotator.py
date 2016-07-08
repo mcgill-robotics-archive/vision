@@ -7,7 +7,7 @@ __author__ = "Jey Kumar"
 
 """ Output line format: "(((x1, y1), (x2, y2)), category)",
         where (x1, y1) and (x2, y2) are coordinates of opposing vertices of the region,
-        and category is either 1 or 2 (1 = buoy, 2 = bin).
+        and category is either 1, 2, or 3 (1 = buoy, 2 = bin, 3 = target).
 """
 
 INSTRUCTIONS = "instructions.jpg" # Path to instructions file relative to this script
@@ -52,6 +52,10 @@ class Annotator(object):
                         break
                     elif key_classify & 0xFF == 50: # "2" pressed
                         category = 2
+                        self.classify(category)
+                        break
+                    elif key_classify & 0xFF == 51: # "3" pressed
+                        category = 3
                         self.classify(category)
                         break
                     elif key_classify & 0xFF == 48: # "0" pressed
@@ -104,7 +108,7 @@ class Annotator(object):
 if __name__ == "__main__":
     """ Instructions:
             1. Click, drag, and release left mouse button to draw a region to annnotate.
-            2. Follow on-screen instructions to classify (1 for buoy, 2 for bin, 0 to reset).
+            2. Follow on-screen instructions to classify (1 for buoy, 2 for bin, 3 for target, 0 to reset).
             3. When finished, press SPACE to write annotation data to text file (with same file name as input image file).
     """
     filename = sys.argv[1]
