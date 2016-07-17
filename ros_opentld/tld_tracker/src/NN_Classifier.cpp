@@ -68,7 +68,7 @@ float NNClassifier::classifyPatch(NormalizedPatch *patch)
 
     float ccorr_max_p = 0;
 
-    //Compare patch to positive patches
+        //Compare patch to positive patches
     for(size_t i = 0; i < truePositives->size(); i++)
     {
         float ccorr = ncc(truePositives->at(i).values, patch->values);
@@ -78,12 +78,14 @@ float NNClassifier::classifyPatch(NormalizedPatch *patch)
             ccorr_max_p = ccorr;
         }
 
-        if (threshold_NNet_loaded)
-        {
+        if (threshold_NNet_loaded) {
             float ccorr = ncc(falsePositives->at(i).values, patch->values);
             float dN = 1 - ccorr_max_n;
             float dP = 1 - ccorr_max_p;
             tldExtractNormalizedPatchRect(img, bb, patch.values);
+            std::string command = "python ./Tester.py -test"
+            command += std::to_string(dP*dN*ccorr)
+            system(command);
         }
     }
 
