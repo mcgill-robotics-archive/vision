@@ -46,6 +46,7 @@ void Main::process()
         switch (state)
         {
             case INIT:
+                ROS_INFO("Loaded NNet successfully");
                 if(newImageReceived())
                 {
                     if(showOutput)
@@ -62,7 +63,7 @@ void Main::process()
                 if(loadModel && !modelImportFile.empty())
                 {
                     ROS_INFO("Loading model %s", modelImportFile.c_str());
-		    ROS_INFO("Loaded NNet from %s", import_filename);
+		                ROS_INFO("Loaded NNet from /DATA/NN_model.pkl and attached to %s", modelImportFile.c_str());
 
                     tld->readFromFile(modelImportFile.c_str());
                     tld->learningEnabled = false;
