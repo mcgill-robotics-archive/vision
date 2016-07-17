@@ -38,6 +38,7 @@
 
 #include <tld/TLD.h>
 #include <boost/interprocess/sync/interprocess_mutex.hpp>
+#include <NN_Classifier.h>
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -104,6 +105,7 @@ class Main
 		bool showOutput;
 		bool exportModelAfterRun;
 		bool loadModel;
+		std::string import_filename = "DATA/NN_model.pkl";
 		bool autoFaceDetection;
 		std::string modelImportFile;
 		std::string modelExportFile;

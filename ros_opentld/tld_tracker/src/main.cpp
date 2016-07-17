@@ -62,6 +62,7 @@ void Main::process()
                 if(loadModel && !modelImportFile.empty())
                 {
                     ROS_INFO("Loading model %s", modelImportFile.c_str());
+		    ROS_INFO("Loaded NNet from %s", import_filename);
 
                     tld->readFromFile(modelImportFile.c_str());
                     tld->learningEnabled = false;
