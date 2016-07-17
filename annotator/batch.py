@@ -28,6 +28,10 @@ NOTES:
 
 print instructions
 
+if len(sys.argv) > 1:
+    if sys.argv[1] == "help" or sys.argv[1] == "-help":
+        exit()
+
 if len(sys.argv) > 1: # Start at specific image
     start_index = files.index(sys.argv[1])
 else: # Start at top
