@@ -1,4 +1,4 @@
-#include "NNClassifier.h"
+#include "NN_Classifier.h"
 
 #include "DetectorCascade.h"
 #include "TLDUtil.h"
