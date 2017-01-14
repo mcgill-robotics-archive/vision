@@ -11,8 +11,12 @@ class ImageFeatures(object):
     def __init__(self, img, hessian=350):
         self.img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) # Load image in B/W
         self.img_colour = img # Load image in colour
-        self.surf = cv2.SURF(hessian) # Higher threshold returns fewer keypoints (kp)
-        self.surf.upright = True # 'True' will ignore orientation of kp to increase speed
+        #Added compatibility for opencv 3.X
+        if "3." in cv2.__version__:
+        	self.surf = cv2.xfeatures2d.SURF_create(hessianThreshold=hessian,upright=True)
+        else:
+        	self.surf = cv2.SURF(hessian) # Higher threshold returns fewer keypoints (kp)
+        	self.surf.getupright = True # 'True' will ignore orientation of kp to increase speed
         self.des = self.get_features(self.img) # Stores feature descriptors
         
     def resize(self, img, x_new, y_new):
